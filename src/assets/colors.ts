@@ -1,0 +1,6 @@
+export const colors = {
+    PRODUCT_CARD_BG: '#FBF8F1',
+    PRODUCT_INFO_BG: '#F7ECDE',
+    PRODUCT_PRICE_TEXT: '#54BAB9',
+    PRODUCT_RATING_ICON: '#4E6C50'
+}   
