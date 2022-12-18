@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, FlatList } from 'react-native'
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState, AppDispatch} from './../store';
@@ -8,7 +8,7 @@ import ProductCard from '../../components/ProductCard';
 import { IProducts } from '../../models/ProductType';
 import {fetchProducts} from './../../features/ProductsSlice'
 import { toggleFavourites } from './../../features/FavouritesSlice';
-import { Navigation, NavigationFunctionComponent } from 'react-native-navigation';
+import { Navigation, NavigationFunctionComponent, Modal as RNModal, OptionsModalPresentationStyle } from 'react-native-navigation';
 
 type Props = {}
 
@@ -23,6 +23,7 @@ const Products: NavigationFunctionComponent = ({componentId}) => {
   const productsState = useSelector((state: RootState) => state.productsSlice);
   const favouritesState = useSelector((state: RootState) => state.favouritesSlice);
   const dispatch = useDispatch<AppDispatch>();
+  const [detailModalVisible, setDetailModalVisible] = useState(false); 
 
   useEffect(() => {
     Navigation.mergeOptions(componentId, {
@@ -42,7 +43,98 @@ const Products: NavigationFunctionComponent = ({componentId}) => {
   }
 
   const pushToDetails = ({item}: {item: IProducts}) => {
-    Navigation.push(componentId, {
+    Navigation.showModal({
+/*       stack: {
+        options: {
+          modalPresentationStyle: 'over'
+        },
+        children: [
+          { */
+            component: {
+              name: 'ProductDetailsWrapper',
+              passProps: {
+                product: item,
+              },
+              options: {
+                modal: {
+                  swipeToDismiss: true
+                },
+                modalPresentationStyle: OptionsModalPresentationStyle.popover,
+                layout: {
+                  backgroundColor: 'transparent'
+                },
+                topBar: {
+                  title: {
+                    text: item.title
+                  }
+                },
+                /* animations: {
+                  push: {
+                    content: {
+                      alpha: {
+                        from: 0,
+                        to: 1,
+                        duration: SHORT_DURATION
+                      }
+                    },
+                    sharedElementTransitions: [
+                      {
+                        fromId: `image${item.id}`,
+                        toId: `image${item.id}Dest`,
+                        duration: LONG_DURATION,
+                        interpolation: {
+                          type: 'spring',
+                          ...SPRING_CONFIG
+                        }
+                      },
+                      {
+                        fromId: `title${item.id}`,
+                        toId: `title${item.id}Dest`,
+                        duration: LONG_DURATION,
+                        interpolation: {
+                          type: 'spring',
+                          ...SPRING_CONFIG
+                        }
+                      },
+                    ]
+                  },
+                  pop: {
+                    content: {
+                      alpha: {
+                        from: 0,
+                        to: 1,
+                        duration: SHORT_DURATION * POP_MULTIPLIER
+                      }
+                    },
+                    sharedElementTransitions: [
+                      {
+                        fromId: `image${item.id}Dest`,
+                        toId: `image${item.id}`,
+                        duration: LONG_DURATION * POP_MULTIPLIER,
+                        interpolation: {
+                          type: 'spring',
+                          ...SPRING_CONFIG
+                        }
+                      },
+                      {
+                        fromId: `title${item.id}Dest`,
+                        toId: `title${item.id}`,
+                        duration: LONG_DURATION * POP_MULTIPLIER,
+                        interpolation: {
+                          type: 'spring',
+                          ...SPRING_CONFIG
+                        }
+                      },
+                    ]
+                  }
+                } */
+              }
+            }
+          /* }
+        ]
+      }, */
+    })
+/*     Navigation.push(componentId, {
       component: {
         name: 'ProductDetails',
         passProps: {
@@ -85,14 +177,14 @@ const Products: NavigationFunctionComponent = ({componentId}) => {
                 alpha: {
                   from: 0,
                   to: 1,
-                  duration: SHORT_DURATION
+                  duration: SHORT_DURATION * POP_MULTIPLIER
                 }
               },
               sharedElementTransitions: [
                 {
                   fromId: `image${item.id}Dest`,
                   toId: `image${item.id}`,
-                  duration: LONG_DURATION,
+                  duration: LONG_DURATION * POP_MULTIPLIER,
                   interpolation: {
                     type: 'spring',
                     ...SPRING_CONFIG
@@ -101,7 +193,7 @@ const Products: NavigationFunctionComponent = ({componentId}) => {
                 {
                   fromId: `title${item.id}Dest`,
                   toId: `title${item.id}`,
-                  duration: LONG_DURATION,
+                  duration: LONG_DURATION * POP_MULTIPLIER,
                   interpolation: {
                     type: 'spring',
                     ...SPRING_CONFIG
@@ -112,7 +204,7 @@ const Products: NavigationFunctionComponent = ({componentId}) => {
           }
         }
       }
-    })
+    }) */
   }
 
   return (

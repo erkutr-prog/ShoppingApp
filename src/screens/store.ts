@@ -1,11 +1,13 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
+import CartSlice from '../features/CartSlice';
 import FavouritesSlice from '../features/FavouritesSlice';
 import ProductsSlice from '../features/ProductsSlice';
 
 
 const rootReducer = combineReducers({
     productsSlice: ProductsSlice,
-    favouritesSlice: FavouritesSlice
+    favouritesSlice: FavouritesSlice,
+    cartsSlice: CartSlice
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

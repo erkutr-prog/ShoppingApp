@@ -34,7 +34,7 @@ const Favourites: NavigationFunctionComponent = ({componentId}) => {
     const pushToDetails = ({item}: {item: IProducts}) => {
         Navigation.push(componentId, {
           component: {
-            name: 'ProductDetails',
+            name: 'ProductDetailsWrapper',
             passProps: {
               item
             },
