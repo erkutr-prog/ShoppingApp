@@ -59,7 +59,7 @@ const Products: NavigationFunctionComponent = ({componentId}) => {
                 modal: {
                   swipeToDismiss: true
                 },
-                modalPresentationStyle: OptionsModalPresentationStyle.popover,
+                modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
                 layout: {
                   backgroundColor: 'transparent'
                 },

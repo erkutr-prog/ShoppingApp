@@ -20,7 +20,7 @@ const CartsSlice = createSlice({
         addToCart(state, action) {
             if (!state.cartsIdList.includes(action.payload.id.toString())) {
                 state.carts.push(action.payload)
-                state.cartsIdList.push(action.payload.id)
+                state.cartsIdList.push(action.payload.id.toString())
             }
         },
         removeFromCart(state, action) {
