@@ -4,12 +4,14 @@ import api from "../utils/Request";
 
 export type CartSlice = {
     carts: IProducts[],
-    cartsIdList: string[]
+    cartsIdList: string[],
+    cartTotalPrice: number
 }
 
 const initialState: CartSlice = {
     carts: [],
-    cartsIdList: []
+    cartsIdList: [],
+    cartTotalPrice: 0
 }
 
 
@@ -21,11 +23,13 @@ const CartsSlice = createSlice({
             if (!state.cartsIdList.includes(action.payload.id.toString())) {
                 state.carts.push(action.payload)
                 state.cartsIdList.push(action.payload.id.toString())
+                state.cartTotalPrice += parseFloat(action.payload.price);
             }
         },
         removeFromCart(state, action) {
             state.carts = state.carts.filter((value) => value.id !== action.payload.id)
             state.cartsIdList = state.cartsIdList.filter((value) => value !== action.payload.id.toString())
+            state.cartTotalPrice -= parseFloat(action.payload.price)
         }
     },
 })

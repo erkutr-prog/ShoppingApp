@@ -19,7 +19,6 @@ export const fetchProducts = createAsyncThunk(
     async ({limit}: {limit: number}) => {
         const response = await api.get(`products?limit${limit}`)
         if (response !== undefined) {
-            console.log("**********response", response);
             return response.data
         } else {
             throw "Couldn't fetch products.Try again later"

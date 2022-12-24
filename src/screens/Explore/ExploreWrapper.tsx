@@ -1,13 +1,16 @@
-import { View, Text } from 'react-native'
 import React from 'react'
+import {Provider as ReduxProvider} from 'react-redux';
+import store from '../store';
+import Explore from './Explore';
+import { NavigationFunctionComponent } from 'react-native-navigation';
 
 type Props = {}
 
-const ExploreWrapper = (props: Props) => {
+const ExploreWrapper: NavigationFunctionComponent = ({componentId}) => {
   return (
-    <View>
-      <Text>ExploreWrapper</Text>
-    </View>
+    <ReduxProvider store={store}>
+      <Explore componentId={componentId}/>
+    </ReduxProvider>
   )
 }
 

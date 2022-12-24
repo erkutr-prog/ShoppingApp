@@ -5,12 +5,15 @@ import store from './../store'
 import Products from './Products'
 import { NavigationFunctionComponent } from 'react-native-navigation'
 
-type Props = {}
+type Props = {
+  componentId: string,
+  category: string | undefined
+}
 
-const ProductsWrapper: NavigationFunctionComponent = ({componentId}) => {
+const ProductsWrapper: NavigationFunctionComponent<Props> = ({componentId, category}) => {
   return (
     <ReduxProvider store={store}>
-        <Products componentId={componentId} />
+        <Products category={category} componentId={componentId} />
     </ReduxProvider>
   )
 }

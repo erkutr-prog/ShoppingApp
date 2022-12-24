@@ -6,19 +6,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 
 type Props = {
     product: IProducts,
-    
-    onPressProduct: Function
+    onPressProduct: Function,
 }
 
 const CONTAINER_HEIGHT = 150
 const CONTAINER_WIDTH = Dimensions.get('screen').width - 10
 
 const CartView = (props: Props) => {
-
-    useEffect(() => {
-        console.log("******props", props.product)
-    }, [])
-
   return (
     <View style={styles.container}>
         <TouchableWithoutFeedback onPress={() => props.onPressProduct(props.product)}>

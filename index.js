@@ -6,13 +6,16 @@ import ExploreWrapper from './src/screens/Explore/ExploreWrapper';
 import CartWrapper from './src/screens/Cart/CartWrapper'
 import ProductDetails from './src/screens/ProductDetails/ProductDetails'
 import ProductDetailsWrapper from './src/screens/ProductDetails/ProductDetailsWrapper';
+import PurchaseWrapper from "./src/screens/Purchase/PurchaseWrapper";
 
 Navigation.registerComponent('ProductsWrapper', () => ProductsWrapper);
 Navigation.registerComponent('ExploreWrapper', () => ExploreWrapper);
 Navigation.registerComponent('FavouritesWrapper', () => FavouritesWrapper);
 Navigation.registerComponent('CartWrapper', () => CartWrapper)
 Navigation.registerComponent('ProductDetails', () => ProductDetails);
-Navigation.registerComponent('ProductDetailsWrapper', () => ProductDetailsWrapper)
+Navigation.registerComponent('ProductDetailsWrapper', () => ProductDetailsWrapper);
+Navigation.registerComponent('PurchaseWrapper', () => PurchaseWrapper);
+
 Navigation.events().registerAppLaunchedListener(() => {
    Navigation.setRoot({
     root: {
