@@ -50,26 +50,32 @@ const Products: NavigationFunctionComponent<Props> = ({
 
   const pushToDetails = ({item}: {item: IProducts}) => {
     Navigation.showModal({
-      component: {
-        name: 'ProductDetailsWrapper',
-        passProps: {
-          product: item,
-        },
-        options: {
-          modal: {
-            swipeToDismiss: true,
-          },
-          modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
-          layout: {
-            backgroundColor: 'transparent',
-          },
-          topBar: {
-            title: {
-              text: item.title,
+      stack: {
+        children: [
+          {
+            component: {
+              name: 'ProductDetailsWrapper',
+              passProps: {
+                product: item,
+              },
+              options: {
+                modal: {
+                  swipeToDismiss: true,
+                },
+                modalPresentationStyle: OptionsModalPresentationStyle.pageSheet,
+                layout: {
+                  backgroundColor: 'transparent',
+                },
+                topBar: {
+                  title: {
+                    text: item.title,
+                  },
+                },
+              },
             },
-          },
-        },
-      },
+          }
+        ]
+      }
     });
   };
 

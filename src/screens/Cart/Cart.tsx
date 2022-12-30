@@ -102,25 +102,31 @@ const Cart: NavigationFunctionComponent = ({componentId}) => {
 
   const goToPurchase = () => {
     Navigation.showModal({
-      component: {
-        name: 'PurchaseWrapper',
-        passProps: {
-        },
-        options: {
-          modal: {
-            swipeToDismiss: true,
-          },
-          modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
-          layout: {
-            backgroundColor: 'transparent',
-          },
-          topBar: {
-            title: {
-              text: 'Purchase'
+      stack: {
+        children: [
+          {
+            component: {
+              name: 'PurchaseWrapper',
+              passProps: {
+              },
+              options: {
+                modal: {
+                  swipeToDismiss: true,
+                },
+                modalPresentationStyle: OptionsModalPresentationStyle.fullScreen,
+                layout: {
+                  backgroundColor: 'transparent',
+                },
+                topBar: {
+                  title: {
+                    text: 'Purchase'
+                  },
+                },
+              },
             },
-          },
-        },
-      },
+          }
+        ]
+      }
     })
   }
 

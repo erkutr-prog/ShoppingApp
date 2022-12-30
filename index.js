@@ -7,6 +7,8 @@ import CartWrapper from './src/screens/Cart/CartWrapper'
 import ProductDetails from './src/screens/ProductDetails/ProductDetails'
 import ProductDetailsWrapper from './src/screens/ProductDetails/ProductDetailsWrapper';
 import PurchaseWrapper from "./src/screens/Purchase/PurchaseWrapper";
+import TopButtonModal from "./src/components/TopButtonModal";
+import AddressList from "./src/components/AddressList";
 
 Navigation.registerComponent('ProductsWrapper', () => ProductsWrapper);
 Navigation.registerComponent('ExploreWrapper', () => ExploreWrapper);
@@ -15,6 +17,8 @@ Navigation.registerComponent('CartWrapper', () => CartWrapper)
 Navigation.registerComponent('ProductDetails', () => ProductDetails);
 Navigation.registerComponent('ProductDetailsWrapper', () => ProductDetailsWrapper);
 Navigation.registerComponent('PurchaseWrapper', () => PurchaseWrapper);
+Navigation.registerComponent('TopButtonModal', () => TopButtonModal);
+Navigation.registerComponent('AddressList', () => AddressList);
 
 Navigation.events().registerAppLaunchedListener(() => {
    Navigation.setRoot({

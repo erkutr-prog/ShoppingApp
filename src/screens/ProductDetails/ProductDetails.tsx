@@ -9,7 +9,7 @@ import {
   Platform,
   Touchable,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {IProducts} from '../../models/ProductType';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -40,6 +40,31 @@ const ProductDetails: NavigationFunctionComponent<Props> = ({
   const [inCart, setInCart] = useState(
     cartState.cartsIdList.includes(product.id.toString()),
   );
+
+  useEffect(() => {
+    Navigation.mergeOptions(componentId, {
+      topBar: {
+        rightButtons: [
+          {
+            id: 'TopButton',
+            component: {
+              name: 'TopButtonModal',
+              passProps: {
+                closeCb: () => closeCallback()
+              }
+            }
+          }
+        ],
+        title: {
+          text: product.title
+        }
+      }
+    })
+  }, []) 
+
+  const closeCallback = () => {
+    Navigation.dismissModal(componentId);
+  }
 
   const renderImageModalHeader = () => {
     return (
@@ -97,11 +122,6 @@ const ProductDetails: NavigationFunctionComponent<Props> = ({
   return (
     <SafeAreaView style={{flex: 1, flexDirection: 'column'}}>
       <ScrollView>
-        <TouchableOpacity
-          style={{margin: 5, marginLeft: 'auto'}}
-          onPress={() => Navigation.dismissModal(componentId)}>
-          <Icon name="close" color={'black'} size={30} />
-        </TouchableOpacity>
         <View
           style={{
             height: Dimensions.get('screen').height * 0.6,
