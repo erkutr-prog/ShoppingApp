@@ -3,7 +3,7 @@ import {View, FlatList} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState, AppDispatch} from './../store';
 import {Provider as ReduxProvider} from 'react-redux';
-import store from './../store';
+import {store} from './../store';
 import ProductCard from '../../components/ProductCard';
 import {IProducts} from '../../models/ProductType';
 import {fetchProducts} from './../../features/ProductsSlice';

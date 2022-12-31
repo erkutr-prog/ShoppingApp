@@ -1,17 +1,22 @@
-import React from 'react'
+import React from 'react';
 import {Provider as ReduxProvider} from 'react-redux';
-import store from '../store';
+import { store, persistor } from '../store';
 import Explore from './Explore';
-import { NavigationFunctionComponent } from 'react-native-navigation';
+import {NavigationFunctionComponent} from 'react-native-navigation';
+import {PersistGate} from 'redux-persist/integration/react';
 
-type Props = {}
+type Props = {};
 
 const ExploreWrapper: NavigationFunctionComponent = ({componentId}) => {
   return (
-    <ReduxProvider store={store}>
-      <Explore componentId={componentId}/>
-    </ReduxProvider>
-  )
-}
+    <React.StrictMode>
+      <ReduxProvider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Explore componentId={componentId} />
+        </PersistGate>
+      </ReduxProvider>
+    </React.StrictMode>
+  );
+};
 
-export default ExploreWrapper
+export default ExploreWrapper;

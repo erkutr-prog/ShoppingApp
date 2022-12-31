@@ -7,7 +7,7 @@ import {StyleSheet} from 'react-native';
 import uuid from 'react-native-uuid';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {colors} from '../assets/colors';
-import store from '../screens/store';
+import {store} from '../screens/store';
 import { addtoAdresses } from '../features/AddressSlice';
 
 type Props = {

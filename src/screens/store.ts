@@ -1,9 +1,12 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit';
+import {combineReducers, configureStore, createStore} from '@reduxjs/toolkit';
 import AddressSlice from '../features/AddressSlice';
 import CartSlice from '../features/CartSlice';
 import CategorySlice from '../features/CategorySlice';
 import FavouritesSlice from '../features/FavouritesSlice';
 import ProductsSlice from '../features/ProductsSlice';
+import { persistStore, persistReducer } from 'redux-persist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import thunk from 'redux-thunk';
 
 
 const rootReducer = combineReducers({
@@ -14,12 +17,21 @@ const rootReducer = combineReducers({
     addressSlice: AddressSlice
 });
 
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  blacklist: ['categories']
+}
+
 export type RootState = ReturnType<typeof rootReducer>;
 
 export type AppDispatch = typeof store.dispatch;
 
-const store = configureStore({
-  reducer: rootReducer,
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: [thunk]
 });
 
-export default store;
+export const persistor = persistStore(store)
