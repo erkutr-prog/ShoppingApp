@@ -1,22 +1,27 @@
-import {View, Text, Dimensions, StyleSheet} from 'react-native';
+import {View, Text, Dimensions, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import React, {useEffect} from 'react';
 import {Navigation, NavigationFunctionComponent, OptionsModalPresentationStyle} from 'react-native-navigation';
-import {RootState, AppDispatch} from './../store';
+import {RootState, AppDispatch, store} from './../store';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   FlatList,
   ScrollView,
-  TouchableOpacity,
 } from 'react-native-gesture-handler';
 import {IProducts} from '../../models/ProductType';
 import CartView from '../../components/CartView';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {colors} from '../../assets/colors';
+import { SwipeListView } from 'react-native-swipe-list-view';
+import { removeFromCart } from '../../features/CartSlice';
+import { ICart } from '../../models/CartType';
 
 const MULTIPLIER = 1.2;
 const POP_MULTIPLIER = 1.0;
 const LONG_DURATION = 300 * MULTIPLIER;
 const SHORT_DURATION = 210 * MULTIPLIER;
+
+const HIDDEN_ITEM_CONTAINER_HEIGHT = 150
+const HIDDEN_ITEM_CONTAINER_WIDTH = Dimensions.get('screen').width - 10
 
 const SPRING_CONFIG = {mass: 2, damping: 500, stiffness: 200};
 
@@ -35,10 +40,9 @@ const Cart: NavigationFunctionComponent = ({componentId}) => {
     });
   }, []);
 
-  const renderItem = (item: IProducts, index: number) => {
+  const renderItem = ({item}:{item: IProducts}) => {
     return (
       <CartView
-        key={index}
         onPressProduct={() => pushDetails({item})}
         product={item}
       />
@@ -130,12 +134,45 @@ const Cart: NavigationFunctionComponent = ({componentId}) => {
     })
   }
 
+  const removeItemFromCarts = (item: any) => {
+    Alert.alert(
+      'Warning',
+      'Do you want to remove this product from your cart?',
+      [
+        {
+          text: 'Yes',
+          onPress: () => store.dispatch(removeFromCart(item.item)) 
+        },
+        {
+          text: 'No',
+          onPress: () => console.log("cancelled")
+        }
+      ]
+    )
+  }
+
+  const renderHiddenItem = (item: any) => {
+    return (
+      <View style={{ width: HIDDEN_ITEM_CONTAINER_WIDTH, height: HIDDEN_ITEM_CONTAINER_HEIGHT,backgroundColor: colors.PRODUCT_RATING_ICON, borderRadius: 20, alignSelf: 'center', marginVertical: 10, marginHorizontal: 10, flexDirection: 'row'}}>
+          <TouchableOpacity onPress={() => removeItemFromCarts(item)} style={{marginLeft: 'auto', flex: 0.20, backgroundColor: colors.PRODUCT_RATING_ICON, justifyContent: 'center', alignItems: 'center', borderRadius: 20}}>
+            <Icon name='trash-outline' style={{alignSelf: 'center'}} size={30} color={colors.PRODUCT_INFO_BG}/>
+          </TouchableOpacity>
+      </View>
+    )
+  }
+
   return (
     <View style={{flex: 1}}>
       {cartsState.carts.length > 0 ? (
-        <ScrollView style={{flex: 1}}>
-          {cartsState.carts.map((value, index) => renderItem(value, index))}
-        </ScrollView>
+        <SwipeListView 
+            data={cartsState.carts}
+            keyExtractor={(index) => index.toString()}
+            renderItem={(item, index) => renderItem(item)}
+            renderHiddenItem={(item) => renderHiddenItem(item)}
+            rightOpenValue={-75}
+            stopLeftSwipe={75}
+            disableRightSwipe
+        />
       ) : (
         <View style={styles.emptyScreenContainer}>
           <Text style={{alignSelf: 'center', fontSize: 18, flex: 1}}>

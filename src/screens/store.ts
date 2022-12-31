@@ -9,19 +9,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import thunk from 'redux-thunk';
 
 
-const rootReducer = combineReducers({
-    productsSlice: ProductsSlice,
-    favouritesSlice: FavouritesSlice,
-    cartsSlice: CartSlice,
-    categoriesSlice: CategorySlice,
-    addressSlice: AddressSlice
-});
-
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  blacklist: ['categoriesSlice']
+}
+
+const categoryPersistConfig = {
+  key: 'categoriesSlice',
+  storage: AsyncStorage,
   blacklist: ['categories']
 }
+
+const rootReducer = combineReducers({
+  productsSlice: ProductsSlice,
+  favouritesSlice: FavouritesSlice,
+  cartsSlice: CartSlice,
+  categoriesSlice: persistReducer(categoryPersistConfig, CategorySlice),
+  addressSlice: AddressSlice
+});
 
 export type RootState = ReturnType<typeof rootReducer>;
 
