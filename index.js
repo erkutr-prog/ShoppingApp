@@ -9,6 +9,7 @@ import ProductDetailsWrapper from './src/screens/ProductDetails/ProductDetailsWr
 import PurchaseWrapper from "./src/screens/Purchase/PurchaseWrapper";
 import TopButtonModal from "./src/components/TopButtonModal";
 import AddressList from "./src/components/AddressList";
+import AddAddress from "./src/components/AddAddress";
 
 Navigation.registerComponent('ProductsWrapper', () => ProductsWrapper);
 Navigation.registerComponent('ExploreWrapper', () => ExploreWrapper);
@@ -19,6 +20,7 @@ Navigation.registerComponent('ProductDetailsWrapper', () => ProductDetailsWrappe
 Navigation.registerComponent('PurchaseWrapper', () => PurchaseWrapper);
 Navigation.registerComponent('TopButtonModal', () => TopButtonModal);
 Navigation.registerComponent('AddressList', () => AddressList);
+Navigation.registerComponent('AddAddress', () => AddAddress);
 
 Navigation.events().registerAppLaunchedListener(() => {
    Navigation.setRoot({

@@ -7,7 +7,7 @@ export type CartSlice = {
 
 const initialState: CartSlice = {
   addresses: [
-    {
+   /*  {
         id: '1',
         header: 'Deneme',
         description: 'deneme adresi',
@@ -18,7 +18,7 @@ const initialState: CartSlice = {
       header: 'Deneme2',
       description: 'deneme adresi 2',
       postalCode: 3
-    }
+    } */
   ],
 };
 
@@ -26,7 +26,9 @@ const AddressSlice = createSlice({
   name: 'AdressList',
   initialState: initialState,
   reducers: {
-    addtoAdresses(state, action) {},
+    addtoAdresses(state, action) {
+        state.addresses.push(action.payload)
+    },
     removeFromAdresses(state, action) {},
     updateAdresses(state, action) {},
   },
