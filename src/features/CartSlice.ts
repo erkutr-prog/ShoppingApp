@@ -26,13 +26,18 @@ const CartsSlice = createSlice({
                 state.cartTotalPrice += parseFloat(action.payload.price);
             }
         },
-        removeFromCart(state, action) {
+        removeFromCart(state, action) {
             state.carts = state.carts.filter((value) => value.id !== action.payload.id)
             state.cartsIdList = state.cartsIdList.filter((value) => value !== action.payload.id.toString())
             state.cartTotalPrice -= parseFloat(action.payload.price)
+        },
+        clearCart(state, action) {
+            state.carts = [];
+            state.cartsIdList = [];
+            state.cartTotalPrice = 0
         }
     },
 })
 
-export const {addToCart, removeFromCart} = CartsSlice.actions
+export const {addToCart, removeFromCart, clearCart} = CartsSlice.actions
 export default CartsSlice.reducer;

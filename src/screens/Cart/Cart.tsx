@@ -112,6 +112,7 @@ const Cart: NavigationFunctionComponent = ({componentId}) => {
             component: {
               name: 'PurchaseWrapper',
               passProps: {
+                totalPrice: cartsState.cartTotalPrice.toString()
               },
               options: {
                 modal: {

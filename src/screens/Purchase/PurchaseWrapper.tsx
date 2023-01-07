@@ -7,15 +7,16 @@ import { NavigationFunctionComponent } from 'react-native-navigation';
 import { PersistGate } from 'redux-persist/integration/react';
 
 type Props = {
-    componentId: string
+    componentId: string,
+    totalPrice: string
 }
 
-const PurchaseWrapper: NavigationFunctionComponent<Props> = ({componentId}) => {
+const PurchaseWrapper: NavigationFunctionComponent<Props> = ({componentId, totalPrice}) => {
   return (
     <React.StrictMode>
       <ReduxProvider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <Purchase componentId={componentId} />
+          <Purchase componentId={componentId} totalPrice={totalPrice} />
         </PersistGate>
       </ReduxProvider>
     </React.StrictMode>
