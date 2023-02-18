@@ -43,7 +43,7 @@ const Products: NavigationFunctionComponent<Props> = ({
       <ProductCard
         product={item}
         onFavCallback={({}) => dispatch(toggleFavourites(item))}
-        onPressItem={({}) => pushToDetails({item})}
+        onPressItem={({}) => {pushToDetails({item})}}
       />
     );
   };
@@ -62,7 +62,7 @@ const Products: NavigationFunctionComponent<Props> = ({
                 modal: {
                   swipeToDismiss: true,
                 },
-                modalPresentationStyle: OptionsModalPresentationStyle.pageSheet,
+                //modalPresentationStyle: OptionsModalPresentationStyle.pageSheet,
                 layout: {
                   backgroundColor: 'transparent',
                 },

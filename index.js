@@ -55,9 +55,9 @@ Navigation.events().registerAppLaunchedListener(() => {
               ],
               options: {
                 bottomTab: {
-                  //icon: agentIconOutline,
+                  icon: require('./src/assets/icons/shopping-outline.png'),
                   text: 'Products',
-                  //selectedIcon: agentIcon,
+                  selectedIcon: require('./src/assets/icons/shopping.png'),
                 },
               },
             },
@@ -75,9 +75,9 @@ Navigation.events().registerAppLaunchedListener(() => {
               ],
               options: {
                 bottomTab: {
-                  //icon: weaponIconOutline,
+                  icon: require('./src/assets/icons/compass-outline.png'),
                   text: 'Explore',
-                  //selectedIcon: weaponIcon,
+                  selectedIcon: require('./src/assets/icons/compass.png'),
                 },
               },
             },
@@ -95,9 +95,9 @@ Navigation.events().registerAppLaunchedListener(() => {
               ],
               options: {
                 bottomTab: {
-                  //icon: weaponIconOutline,
+                  icon: require('./src/assets/icons/cart-outline.png'),
                   text: 'Cart',
-                  //selectedIcon: weaponIcon,
+                  selectedIcon: require('./src/assets/icons/cart.png'),
                 },
               },
             },
@@ -115,9 +115,9 @@ Navigation.events().registerAppLaunchedListener(() => {
               ],
               options: {
                 bottomTab: {
-                  //icon: weaponIconOutline,
+                  icon: require('./src/assets/icons/heart-outline.png'),
                   text: 'Favourites',
-                  //selectedIcon: weaponIcon,
+                  selectedIcon: require('./src/assets/icons/heart.png'),
                 },
               },
             },

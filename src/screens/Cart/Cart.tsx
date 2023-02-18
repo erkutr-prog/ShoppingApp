@@ -3,17 +3,12 @@ import React, {useEffect} from 'react';
 import {Navigation, NavigationFunctionComponent, OptionsModalPresentationStyle} from 'react-native-navigation';
 import {RootState, AppDispatch, store} from './../store';
 import {useSelector, useDispatch} from 'react-redux';
-import {
-  FlatList,
-  ScrollView,
-} from 'react-native-gesture-handler';
 import {IProducts} from '../../models/ProductType';
 import CartView from '../../components/CartView';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {colors} from '../../assets/colors';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { removeFromCart } from '../../features/CartSlice';
-import { ICart } from '../../models/CartType';
 
 const MULTIPLIER = 1.2;
 const POP_MULTIPLIER = 1.0;
@@ -176,8 +171,9 @@ const Cart: NavigationFunctionComponent = ({componentId}) => {
         />
       ) : (
         <View style={styles.emptyScreenContainer}>
-          <Text style={{alignSelf: 'center', fontSize: 18, flex: 1}}>
-            You haven't add any products in your cart yet.
+          <Icon name='cart-outline' size={100} style={{alignSelf: 'center', justifyContent: 'center'}}/> 
+          <Text style={{alignSelf: 'center', fontSize: 18}}>
+            Your cart is empty.
           </Text>
         </View>
       )}
