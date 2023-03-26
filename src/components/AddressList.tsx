@@ -1,23 +1,20 @@
 import { View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback } from 'react-native'
 import React from 'react'
-import { Navigation, NavigationFunctionComponent } from 'react-native-navigation'
 import { IAddress } from '../models/AddressType'
 import { FlatList, ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { colors } from '../assets/colors'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { AppStackParamList } from '../models/TabParamsList'
 
-type Props = {
-    componentId: string,
-    addressList: IAddress[],
-    selectCallback?: Function
-}
+type Props = NativeStackScreenProps<AppStackParamList, 'AddressList'>
 
-const AddressList: NavigationFunctionComponent<Props> = ({componentId, addressList, selectCallback}) => {
+const AddressList = ({route, navigation}: Props) => {
 
     const onPressAddress = (id: string) => {
-        if (selectCallback !== undefined) {
-            selectCallback(addressList.filter((value) => value.id == id)[0])
+        if (route.params.selectCallback !== undefined) {
+            route.params.selectCallback(route.params.addressList.filter((value) => value.id == id)[0])
         }
-        Navigation.dismissModal(componentId)
+        navigation.goBack()
     }
 
 
@@ -46,7 +43,8 @@ const AddressList: NavigationFunctionComponent<Props> = ({componentId, addressLi
   return (
     <View style={{flex: 1}}>
         <FlatList
-            data={addressList}
+            contentContainerStyle={{ marginTop: 50 }}
+            data={route.params.addressList}
             keyExtractor={(item, index) => index.toString()}
             renderItem={(item) => renderItem(item)}
         />

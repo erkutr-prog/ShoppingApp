@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { FlatList, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import {useSelector} from 'react-redux';
 import {RootState} from './../screens/store';
-import { Navigation } from 'react-native-navigation'
 
 type Props = {
   product: IProducts,

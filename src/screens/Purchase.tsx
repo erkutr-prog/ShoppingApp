@@ -8,37 +8,25 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {
-  Navigation,
-  NavigationFunctionComponent,
-  OptionsModalPresentationStyle,
-} from 'react-native-navigation';
-import {
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector, useDispatch} from 'react-redux';
-import {RootState, AppDispatch} from './../store';
-import {Modal as RNModal} from 'react-native-navigation';
-import TopButtonModal from '../../components/TopButtonModal';
-import {colors} from '../../assets/colors';
+import {RootState, AppDispatch} from './store';
+import {colors} from '../assets/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {IAddress} from '../../models/AddressType';
-import CustomTextInput from '../../components/CustomTextInput';
-import { clearCart } from '../../features/CartSlice';
+import {IAddress} from '../models/AddressType';
+import CustomTextInput from '../components/CustomTextInput';
+import {clearCart} from '../features/CartSlice';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {AppStackParamList} from '../models/TabParamsList';
 
-type Props = {
-  componentId: string;
-  totalPrice: string
-};
+type Props = NativeStackScreenProps<AppStackParamList, 'Purchase'>;
 
-const SCREEN_WIDTH = Dimensions.get('screen').width
+const SCREEN_WIDTH = Dimensions.get('screen').width;
 const SCREEN_WIDTH_MARGIN = SCREEN_WIDTH - 20;
 
-const Purchase: NavigationFunctionComponent<Props> = ({componentId, totalPrice}) => {
+const Purchase = ({route, navigation}: Props) => {
   const addressState = useSelector((state: RootState) => state.addressSlice);
   const dispatch = useDispatch<AppDispatch>();
-  const [adressModalVisible, setAddressModalVisible] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState<IAddress>(
     addressState.addresses[0],
   );
@@ -47,33 +35,14 @@ const Purchase: NavigationFunctionComponent<Props> = ({componentId, totalPrice})
     cardExpireDate: '',
     cardCVV: '',
   });
-  const [purchaseCompleteModalVisible, setPurchaseCompleteModalVisible] = useState(false);
-
-  useEffect(() => {
-    Navigation.mergeOptions(componentId, {
-      topBar: {
-        title: {
-          text: 'Purchase',
-        },
-        rightButtons: [
-          {
-            id: 'Topbutton',
-            component: {
-              name: 'TopButtonModal',
-              passProps: {
-                closeCb: () => closeCallback(),
-              },
-            },
-          },
-        ],
-      },
-    });
-  }, []);
+  const [
+    purchaseCompleteModalVisible,
+    setPurchaseCompleteModalVisible,
+  ] = useState(false);
 
   const closeCallback = () => {
-    Navigation.dismissModal(componentId);
+    navigation.goBack();
   };
-
 
   const changeSelectedAddress = (address: IAddress) => {
     setSelectedAddress(address);
@@ -159,65 +128,24 @@ const Purchase: NavigationFunctionComponent<Props> = ({componentId, totalPrice})
 
   const openAddressPicker = () => {
     if (addressState.addresses.length == 0) {
-      Navigation.showModal({
-        stack: {
-          children: [
-            {
-              component: {
-                name: 'AddAddress',
-                passProps: {
-                  addCallback: (address: IAddress) =>
-                    changeSelectedAddress(address),
-                },
-                options: {
-                  modal: {
-                    swipeToDismiss: true,
-                  },
-                  modalPresentationStyle:
-                    OptionsModalPresentationStyle.pageSheet,
-                  layout: {
-                    backgroundColor: 'transparent',
-                  },
-                },
-              },
-            },
-          ],
-        },
+      navigation.navigate('AddAddress', {
+        addCallback: (address: IAddress) => changeSelectedAddress(address),
       });
     } else {
-      Navigation.showModal({
-        stack: {
-          children: [
-            {
-              component: {
-                name: 'AddressList',
-                passProps: {
-                  componentId: componentId,
-                  addressList: addressState.addresses,
-                  selectCallback: (address: IAddress) =>
-                    changeSelectedAddress(address),
-                },
-                options: {
-                  modal: {
-                    swipeToDismiss: true,
-                  },
-                  modalPresentationStyle:
-                    OptionsModalPresentationStyle.overCurrentContext,
-                  layout: {
-                    backgroundColor: 'transparent',
-                  },
-                },
-              },
-            },
-          ],
-        },
+      navigation.navigate('AddressList', {
+        addressList: addressState.addresses,
+        selectCallback: (address: IAddress) => changeSelectedAddress(address),
       });
     }
   };
 
   const cardInfoValidCheck = () => {
-    return (creditCardInfo.cardNumber.length == 19 && creditCardInfo.cardExpireDate.length == 5 && creditCardInfo.cardCVV.length == 3)
-  }
+    return (
+      creditCardInfo.cardNumber.length == 19 &&
+      creditCardInfo.cardExpireDate.length == 5 &&
+      creditCardInfo.cardCVV.length == 3
+    );
+  };
 
   const completePurchase = () => {
     if (addressState.addresses.length == 0) {
@@ -226,37 +154,44 @@ const Purchase: NavigationFunctionComponent<Props> = ({componentId, totalPrice})
     if (!cardInfoValidCheck()) {
       return false;
     }
-    setPurchaseCompleteModalVisible(true)
+    setPurchaseCompleteModalVisible(true);
     setTimeout(() => {
-      setPurchaseCompleteModalVisible(false)
-    }, 1500)
+      setPurchaseCompleteModalVisible(false);
+    }, 1500);
     setTimeout(() => {
-      closeCallback()
-      dispatch(clearCart('success'))
-    }, 2000)
-  }
+      closeCallback();
+      dispatch(clearCart('success'));
+    }, 2000);
+  };
 
   const purchaseSuccessModal = () => {
     return (
       <View style={styles.centered}>
         <View style={styles.modal}>
-          <View style={{
-            height: 90,
-            width: 90,
-            borderRadius: 45,
-            backgroundColor: colors.PRODUCT_PRICE_TEXT,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-            <Icon name='checkmark-outline' size={45} style={{alignSelf: 'center', fontWeight: 'bold'}} color={'white'}/>
+          <View
+            style={{
+              height: 90,
+              width: 90,
+              borderRadius: 45,
+              backgroundColor: colors.PRODUCT_PRICE_TEXT,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Icon
+              name="checkmark-outline"
+              size={45}
+              style={{alignSelf: 'center', fontWeight: 'bold'}}
+              color={'white'}
+            />
           </View>
           <Text style={{paddingTop: 50, fontWeight: '500', fontSize: 20}}>
             Your order has been received successfully!
           </Text>
         </View>
       </View>
-    )
-  }
+    );
+  };
 
   return (
     <SafeAreaView style={{flex: 1, flexDirection: 'column'}}>
@@ -268,25 +203,22 @@ const Purchase: NavigationFunctionComponent<Props> = ({componentId, totalPrice})
       >
         {purchaseSuccessModal()}
       </Modal>
-      <RNModal
-        visible={adressModalVisible}
-        onRequestClose={() => setAddressModalVisible(false)}>
-        <TopButtonModal closeCb={() => setAddressModalVisible(false)} />
-      </RNModal>
       <ScrollView>
         <View style={{flexDirection: 'column', flex: 1, paddingTop: 20}}>
           <View
             style={{
               width: SCREEN_WIDTH_MARGIN,
               flexDirection: 'row',
-            }}>
+            }}
+          >
             <Text
               style={{
                 marginRight: 'auto',
                 marginLeft: 20,
                 fontWeight: 'bold',
                 fontSize: 15,
-              }}>
+              }}
+            >
               Address
             </Text>
           </View>
@@ -298,7 +230,8 @@ const Purchase: NavigationFunctionComponent<Props> = ({componentId, totalPrice})
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-              }}>
+              }}
+            >
               {addressState.addresses.length > 0 ? (
                 <View style={{marginTop: 5}}>
                   <Text style={{marginLeft: 30, fontWeight: 'bold'}}>
@@ -309,10 +242,12 @@ const Purchase: NavigationFunctionComponent<Props> = ({componentId, totalPrice})
                       flexDirection: 'row',
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <Text
                       style={{marginLeft: 30, marginTop: 5}}
-                      numberOfLines={2}>
+                      numberOfLines={2}
+                    >
                       {selectedAddress.description}
                     </Text>
                     <View style={{marginLeft: 'auto'}}>
@@ -325,8 +260,7 @@ const Purchase: NavigationFunctionComponent<Props> = ({componentId, totalPrice})
                   </View>
                 </View>
               ) : (
-                <View
-                  style={styles.addressAddBtn}>
+                <View style={styles.addressAddBtn}>
                   <Icon
                     name="add-outline"
                     size={30}
@@ -345,7 +279,8 @@ const Purchase: NavigationFunctionComponent<Props> = ({componentId, totalPrice})
                     marginRight: 'auto',
                     fontWeight: 'bold',
                     fontSize: 15,
-                  }}>
+                  }}
+                >
                   Payment
                 </Text>
                 <Icon
@@ -361,12 +296,13 @@ const Purchase: NavigationFunctionComponent<Props> = ({componentId, totalPrice})
       </ScrollView>
       <View style={styles.completeFooter}>
         <View style={styles.priceContainer}>
-          <Text style={{fontWeight: 'bold'}}>{'Total Price: '}</Text> 
-          <Text style={{fontWeight: 'bold'}}>
-            {totalPrice}
-          </Text>
+          <Text style={{fontWeight: 'bold'}}>{'Total Price: '}</Text>
+          <Text style={{fontWeight: 'bold'}}>{route.params.totalPrice}</Text>
         </View>
-        <TouchableOpacity onPress={() => completePurchase()} style={styles.purchasebtnContainer}>
+        <TouchableOpacity
+          onPress={() => completePurchase()}
+          style={styles.purchasebtnContainer}
+        >
           <Icon name="cash-outline" size={20} />
           <Text style={{marginLeft: 5}}>{'Complete'}</Text>
         </TouchableOpacity>
@@ -438,25 +374,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
   modal: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
+    alignItems: 'center',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
     flexDirection: 'column',
     justifyContent: 'center',
-  }
+  },
 });
 
 export default Purchase;

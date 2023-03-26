@@ -1,70 +1,49 @@
 import {
   View,
   Text,
-  Image,
-  StyleSheet,
   Dimensions,
   SafeAreaView,
   TouchableOpacity,
   Platform,
-  Touchable,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
-import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
-import {IProducts} from '../../models/ProductType';
 import {ScrollView} from 'react-native-gesture-handler';
 import ImageModal from 'react-native-image-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ImageDetail} from 'react-native-image-modal';
 import Share, {Social} from 'react-native-share';
-import {colors} from '../../assets/colors';
+import {colors} from '../assets/colors';
 import {useSelector, useDispatch} from 'react-redux';
-import {RootState, AppDispatch} from './../store';
-import {addToCart, removeFromCart} from '../../features/CartSlice';
+import {RootState, AppDispatch} from './store';
+import {addToCart, removeFromCart} from '../features/CartSlice';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AppStackParamList } from '../models/TabParamsList';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-type Props = {
-  product: IProducts;
-  imageId: number;
-};
+type Props = NativeStackScreenProps<AppStackParamList, 'ProductDetails'>
 
 const shareTitle = 'Check out this awesome product!';
 
-const ProductDetails: NavigationFunctionComponent<Props> = ({
-  componentId,
-  product,
-  imageId,
-}) => {
+const ProductDetails = ({route, navigation}: Props) => {
   const cartState = useSelector((state: RootState) => state.cartsSlice);
   const dispatch = useDispatch<AppDispatch>();
   const modalRef = useRef<ImageDetail>(null);
   const [inCart, setInCart] = useState(
-    cartState.cartsIdList.includes(product.id.toString()),
+    cartState.cartsIdList.includes(route.params.product.id.toString()),
   );
 
   useEffect(() => {
-    Navigation.mergeOptions(componentId, {
-      topBar: {
-        rightButtons: [
-          {
-            id: 'TopButton',
-            component: {
-              name: 'TopButtonModal',
-              passProps: {
-                closeCb: () => closeCallback()
-              }
-            }
-          }
-        ],
-        title: {
-          text: product.title
-        }
-      }
+    navigation.setOptions({
+      title: route.params.product.title,
+      headerRight: () => (
+        <TouchableOpacity onPress={() => {
+          navigation.goBack()
+        }}>
+          <Ionicons name='close' size={25}/>
+        </TouchableOpacity>
+      )
     })
   }, []) 
-
-  const closeCallback = () => {
-    Navigation.dismissModal(componentId);
-  }
 
   const renderImageModalHeader = () => {
     return (
@@ -88,9 +67,9 @@ const ProductDetails: NavigationFunctionComponent<Props> = ({
       ios: {
         activityItemSources: [
           {
-            placeholderItem: {type: 'url', content: product.image},
+            placeholderItem: {type: 'url', content: route.params.product.image},
             item: {
-              default: {type: 'url', content: product.image},
+              default: {type: 'url', content: route.params.product.image},
             },
             subject: {
               default: shareTitle,
@@ -101,7 +80,7 @@ const ProductDetails: NavigationFunctionComponent<Props> = ({
       default: {
         shareTitle,
         subject: shareTitle,
-        message: `${shareTitle} ${product.image}`,
+        message: `${shareTitle} ${route.params.product.image}`,
       },
     });
     Share.open(options)
@@ -110,12 +89,12 @@ const ProductDetails: NavigationFunctionComponent<Props> = ({
   };
 
   const addToCarts = () => {
-    dispatch(addToCart(product));
+    dispatch(addToCart(route.params.product));
     setInCart(true);
   };
 
   const removeFromCarts = () => {
-    dispatch(removeFromCart(product));
+    dispatch(removeFromCart(route.params.product));
     setInCart(false);
   };
 
@@ -129,8 +108,8 @@ const ProductDetails: NavigationFunctionComponent<Props> = ({
           }}>
           <ImageModal
             modalRef={modalRef}
-            source={{uri: product.image}}
-            nativeID={`image${imageId}Dest`}
+            source={{uri: route.params.product.image}}
+            nativeID={`image${route.params.imageId}Dest`}
             style={{
               height: Dimensions.get('screen').height * 0.6,
               width: Dimensions.get('screen').width - 10,
@@ -142,10 +121,10 @@ const ProductDetails: NavigationFunctionComponent<Props> = ({
         </View>
         <Text
           style={{fontWeight: 'bold', margin: 8}}
-          nativeID={`title${imageId}Dest`}>
-          {product.title}
+          nativeID={`title${route.params.imageId}Dest`}>
+          {route.params.product.title}
         </Text>
-        <Text style={{fontSize: 10, margin: 8}}>{product.description}</Text>
+        <Text style={{fontSize: 10, margin: 8}}>{route.params.product.description}</Text>
       </ScrollView>
       <View
         style={{

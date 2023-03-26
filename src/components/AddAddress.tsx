@@ -1,7 +1,6 @@
 import {View, Text, Dimensions} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CustomTextInput from './CustomTextInput';
-import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {IAddress} from '../models/AddressType';
 import {StyleSheet} from 'react-native';
 import uuid from 'react-native-uuid';
@@ -9,28 +8,18 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {colors} from '../assets/colors';
 import {store} from '../screens/store';
 import { addtoAdresses } from '../features/AddressSlice';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { AppStackParamList } from '../models/TabParamsList';
 
-type Props = {
-    addCallback: Function
-};
+type Props = NativeStackScreenProps<AppStackParamList, 'AddAddress'>
 
-const AddAddress: NavigationFunctionComponent<Props> = ({componentId, addCallback}) => {
+const AddAddress = ({route, navigation}: Props) => {
   const [address, setAddress] = useState<IAddress>({
     id: uuid.v4().toString(),
     header: '',
     description: '',
     postalCode: 0,
   });
-
-  useEffect(() => {
-    Navigation.mergeOptions(componentId, {
-      topBar: {
-        title: {
-          text: 'Add Address',
-        },
-      },
-    });
-  }, []);
 
   const handleChangesInput = (key: string, value: any) => {
     switch (key) {
@@ -65,8 +54,8 @@ const AddAddress: NavigationFunctionComponent<Props> = ({componentId, addCallbac
 
   const saveTheAddress = () => {
       store.dispatch(addtoAdresses(address))
-      addCallback(address)
-      Navigation.dismissModal(componentId);
+      route.params.addCallback(address)
+      navigation.goBack()
   }
 
   return (
