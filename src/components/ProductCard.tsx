@@ -29,6 +29,10 @@ const ProductCard = (props: Props) => {
   const ratingArray = new Array(Math.floor(rating.rate)).fill('star');
   const [isFav, setFav] = useState(favouritesState.favouritesIdList.includes(props.product.id.toString()))
 
+  useEffect(() => {
+    setFav(favouritesState.favouritesIdList.includes(props.product.id.toString()))
+  }, [favouritesState.favouritesIdList])
+
   const renderRatingStar = () => {
     return (
       <View style={{justifyContent: 'center', alignItems: 'center', paddingHorizontal: 2}}>
