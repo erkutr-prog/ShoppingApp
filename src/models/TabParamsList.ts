@@ -6,6 +6,7 @@ export type RootStackParamList = {
     Explore: undefined;
     Favourites: undefined;
     Products: { category: Categories };
+    Profile: undefined
 }
 
 export type AppStackParamList = {
@@ -15,4 +16,7 @@ export type AppStackParamList = {
     AddressList: { addressList: IAddress[], selectCallback?: Function };
     ProductDetails: { product: IProducts, imageId: number};
     FilteredProducts: { category: Categories };
+    Profile: undefined
+    Login: { loginCb: () => void };
+    Register: undefined
 }

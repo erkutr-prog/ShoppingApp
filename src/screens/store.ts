@@ -7,6 +7,7 @@ import ProductsSlice from '../features/ProductsSlice';
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import thunk from 'redux-thunk';
+import UserSlice from '../features/UserSlice';
 
 
 const persistConfig = {
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
   favouritesSlice: FavouritesSlice,
   cartsSlice: CartSlice,
   categoriesSlice: persistReducer(categoryPersistConfig, CategorySlice),
-  addressSlice: AddressSlice
+  addressSlice: AddressSlice,
+  userSlice: UserSlice
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

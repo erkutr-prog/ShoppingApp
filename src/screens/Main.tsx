@@ -10,6 +10,7 @@ import {RootStackParamList} from '../models/TabParamsList';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Profile from './Profile';
 
 type Props = {};
 
@@ -55,6 +56,14 @@ const Main = (props: Props) => {
           />
         )
       }} component={Favourites} />
+      <Tab.Screen name="Profile" options={{
+        tabBarIcon: ({focused}) => (
+          <Ionicons
+            name={focused ? 'person' : 'person-outline'}
+            size={25}
+          />
+        )
+      }} component={Profile} />
     </Tab.Navigator>
   );
 };
